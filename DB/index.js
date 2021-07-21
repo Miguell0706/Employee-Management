@@ -1,21 +1,34 @@
-const connection = require("./connection")
+const connection = require("./connection");
 
 class DB {
-    constructor(connection) {
-        this.connection = connection
-        
-      }
-  //create function
-  createEmployee(values) {
-    return this.connection.query("INSERT INTO employee SET ?", values)
+  constructor(connection) {
+    this.connection = connection;
   }
-  
+  //Functions for creating 
+  createEmployee(values) {
+    return this.connection.query("INSERT INTO employee SET ?", values);
+  }
+  createRole(values) {
+    return this.connection.query("INSERT INTO role SET ?", values);
+  }
+  createDepartment(values) {
+    return this.connection.query("INSERT INTO department SET ?", values);
+  }
+  //Find all functions
   findAllEmployees() {
-    return this.connection.query("SELECT * FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id")
+    return this.connection.query(
+      "SELECT * FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN department ON role.department_id = department.id"
+    );
   }
   findAllRoles() {
-    return this.connection.query("SELECT * FROM role LEFT JOIN department ON role.department_id = department.id")
-    
+    return this.connection.query(
+      "SELECT * FROM role LEFT JOIN department ON role.department_id = department.id"
+    );
+  }
+  findAllDepartments() {
+    return this.connection.query(
+      "SELECT * FROM department"
+    );
   }
 }
-module.exports = new DB(connection)
+module.exports = new DB(connection);
