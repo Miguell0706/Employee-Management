@@ -26,7 +26,7 @@ Just fork the repo and watch the tutorial to learn how to use it!
 npm i
 
 ## Test 
-There will be a video tutorial demonstrating the usage of this applciation linked here!
+There will be a video tutorial demonstrating the usage of this application linked here!
 
 
 ## Questions
