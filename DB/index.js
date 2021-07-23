@@ -22,13 +22,17 @@ class DB {
   }
   findAllRoles() {
     return this.connection.query(
-      "SELECT * FROM role LEFT JOIN department ON role.department_id = department.id"
+      "SELECT *, role.id AS id FROM role LEFT JOIN department ON role.department_id = department.id"
     );
   }
   findAllDepartments() {
     return this.connection.query(
       "SELECT * FROM department"
     );
+  }
+  //Update Employee Role Function
+  updateEmployeeRole(values) {
+    return this.connection.query("UPDATE employee SET ? WHERE ?", values);
   }
 }
 module.exports = new DB(connection);

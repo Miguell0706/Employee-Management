@@ -1,5 +1,4 @@
-//For each add/view functions: 1.Use inquirer to prompt questions where each question corresponds to a column in the table, such as role, name, salary, etc...
-//Next using npm mysql package to interact with the database (.query(String Value, PlaceHolder Values,))
+//For eacthe database (.query(String Value, PlaceHolder Values,))
 const inquirer = require("inquirer");
 const { connection } = require("./db");
 const db = require("./db");
@@ -57,30 +56,30 @@ async function newEmployee() {
     },
   ]);
 
-  const role = roles.map(({ id, title }) => ({
-    name: title,
-    value: id,
+  const roleChoices = roles.map((roleObject) => ({
+    name: roleObject.title,
+    value: roleObject.id,
   }));
 
   const { roleId } = await inquirer.prompt({
     type: "list",
     name: "roleId",
     message: "what is the role of the employee?",
-    choices: role,
+    choices: roleChoices,
   });
 
   employeeQuestions.role_id = roleId;
 
-  const manChoices = employees.map(({ id, first_Name, last_Name }) => ({
-    name: `${first_Name} ${last_Name}`,
-    value: id,
+  const managerChoices = employees.map((employeeObject) => ({
+    name: `${employeeObject.first_Name} ${employeeObject.last_Name}`,
+    value: employeeObject.id,
   }));
 
   const { managerId } = await inquirer.prompt({
     type: "list",
     name: "managerId",
     message: "who is their manager?",
-    choices: manChoices,
+    choices: managerChoices,
   });
 
   employeeQuestions.manager_id = managerId;
@@ -88,101 +87,89 @@ async function newEmployee() {
   await db.createEmployee(employeeQuestions);
 
   console.log(employeeQuestions);
+
+  init()
 }
-//Function for adding a role !!!!!NOT FINISHED!!!!
+//Function for adding a role
 async function newRole() {
+  const department = await db.findAllDepartments();
   const roleQuestions = await inquirer.prompt([
     {
-      name: "Name",
+      name: "title",
       message: "What is the role called?",
     },
     {
-        name: "Salary",
-        message: "What is the salary of this new role?",
-    },
-    {  
-         name: "DepartmentId",
-         message: "What is the department ID?"
-    },
-]); 
-  const role = roles.map(({ id, title }) => ({
-    name: title, 
-    value: id,
-  }));
-
-  const { roleId } = await inquirer.prompt({
-    type: "list",
-    name: "roleId",
-    message: "what is the role of the employee?",
-    choices: role,
-  });
-
-  roleQuestions.role_id = roleId;
-
-  const manChoices = employees.map(({ id, first_Name, last_Name }) => ({
-    name: `${first_Name} ${last_Name}`,
-    value: id,
-  }));
-
-  const { managerId } = await inquirer.prompt({
-    type: "list",
-    name: "managerId",
-    message: "who is their manager?",
-    choices: manChoices,
-  });
-
-  roleQuestions.manager_id = managerId;
-
-  await db.createDepartment(roleQuestions);
-
-  console.log(roleQuestions);
-}
-//Function for adding new department !!!!NOT FINISHED!!!
-async function newDepartment() {
-  const roles = await db.findAllRoles();
-  const roleQuestions = await inquirer.prompt([
-    {
-      name: "role_Name",
-      message: "What is the role called?",
+      name: "salary",
+      message: "What is the salary of this new role?",
     },
   ]);
 
-  const role = roles.map(({ id, title }) => ({
-    name: title,
-    value: id,
+  const departmentChoices = department.map((departmentObject) => ({
+    name: departmentObject.name,
+    value: departmentObject.id,
+  }));
+
+  const { departmentId } = await inquirer.prompt({
+    type: "list",
+    name: "departmentId",
+    message: "what is the department associated to the new role?",
+    choices: departmentChoices,
+  });
+
+  roleQuestions.department_id = departmentId;
+
+  db.createRole(roleQuestions);
+
+  console.log(roleQuestions);
+  init()
+}
+//Function for adding new department
+async function newDepartment() {
+  const departmentQuestions = await inquirer.prompt([
+    {
+      name: "name",
+      message: "What is the department called?",
+    },
+  ]);
+
+  await db.createDepartment(departmentQuestions);
+
+  console.log(departmentQuestions);
+  init()
+}
+//Function for updating Employee Role !!!NOT FINISHED!!!
+async function updateEmployeeRole() {
+  const employees = await db.findAllEmployees();
+  const roles = await db.findAllRoles();
+  const employeeChoices = employees.map((employeeObject) => ({
+    name: `${employeeObject.first_Name} ${employeeObject.last_Name}`,
+    value: employeeObject.id,
+  }));
+  const { employeeName } = await inquirer.prompt({
+    type: "list",
+    name: "employeeName",
+    message: "what is the name of the employee?",
+    choices: employeeChoices,
+  });
+
+  const roleChoices = roles.map((roleObject) => ({
+    name: roleObject.title,
+    value: roleObject.id,
   }));
 
   const { roleId } = await inquirer.prompt({
     type: "list",
     name: "roleId",
-    message: "what is the role of the employee?",
-    choices: role,
+    message: "what is the new role of the employee?",
+    choices: roleChoices,
   });
 
-  employeeQuestions.role_id = roleId;
-
-  const manChoices = employees.map(({ id, first_Name, last_Name }) => ({
-    name: `${first_Name} ${last_Name}`,
-    value: id,
-  }));
-
-  const { managerId } = await inquirer.prompt({
-    type: "list",
-    name: "managerId",
-    message: "who is their manager?",
-    choices: manChoices,
-  });
-
-  employeeQuestions.manager_id = managerId;
-
-  await db.createEmployee(employeeQuestions);
-
-  console.log(employeeQuestions);
+  const updateChoices = [ { role_id: roleId },{ id: employeeName }];
+  await db.updateEmployeeRole(updateChoices);
+  console.log(updateChoices);
+  init()
 }
-//Function for updating Employee Role !!!NOT FINISHED!!!
-async function updateEmployeeRole(){
 
-}
 //Functions for viewing employes, roles, and departments
 async function viewEmployees() {
   const employees = await db.findAllEmployees();
