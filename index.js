@@ -141,6 +141,7 @@ async function newDepartment() {
 async function updateEmployeeRole() {
   const employees = await db.findAllEmployees();
   const roles = await db.findAllRoles();
+  
   const employeeChoices = employees.map((employeeObject) => ({
     name: `${employeeObject.first_Name} ${employeeObject.last_Name}`,
     value: employeeObject.id,
@@ -155,6 +156,8 @@ async function updateEmployeeRole() {
   const roleChoices = roles.map((roleObject) => ({
     name: roleObject.title,
     value: roleObject.id,
+
+
   }));
 
   const { roleId } = await inquirer.prompt({
@@ -163,11 +166,11 @@ async function updateEmployeeRole() {
     message: "what is the new role of the employee?",
     choices: roleChoices,
   });
-
+  
   const updateChoices = [ { role_id: roleId },{ id: employeeName }];
   await db.updateEmployeeRole(updateChoices);
   console.log(updateChoices);
-  init()
+  init();
 }
 
 //Functions for viewing employes, roles, and departments
