@@ -1,5 +1,5 @@
 # Employee Management System
-  
+ 
 
 ## Description: 
 The Employee Management System application allows the user to be able to add,view employees,departments, and roles for their company as well as update an employee's role and have it uploaded to the database!
@@ -17,16 +17,16 @@ The Employee Management System application allows the user to be able to add,vie
 
 
 
-
-
 ## Usage
 Just fork the repo and watch the tutorial to learn how to use it!
 
 ## Installation
+Open the terminal and run this code to install the dependencies that are inside of the package.json file
+```
 npm i
-
+```
 ## Test 
-There will be a video tutorial demonstrating the usage of this applciation linked here!
+There will be a video tutorial demonstrating the usage of this application linked here!
 
 
 ## Questions
