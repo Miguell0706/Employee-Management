@@ -19,6 +19,7 @@ The Employee Management System application allows the user to be able to add,vie
 
 ## Usage
 Just fork the repo and watch the tutorial to learn how to use it!
+[Link to Video here](https://drive.google.com/file/d/1dFOsWNfh37meijkc2JchNVsWuvJNtbHf/view)
 
 ## Installation
 Open the terminal and run this code to install the dependencies that are inside of the package.json file
